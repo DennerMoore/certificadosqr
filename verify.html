@@ -413,7 +413,32 @@ console.log(error);
 
 if(error || !data){
 
-if(data && data.ativo === false){
+document.getElementById(
+"resultado"
+).innerHTML = `
+
+<div class="card invalido">
+
+<img
+src="logo.png"
+class="logo">
+
+<h2>❌ Certificado No Encontrado</h2>
+
+<p>
+No existe ningún certificado
+con este identificador.
+</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+if(data.ativo === false){
 
 document.getElementById(
 "resultado"
@@ -429,7 +454,7 @@ class="logo">
 
 <p>
 Este certificado fue revocado
-y no se encuentra válido.
+y ya no posee validez.
 </p>
 
 <div class="info">
@@ -448,63 +473,6 @@ ${data.id}</p>
 
 </div>
 
-</div>
-
-`;
-
-return;
-
-}
-}
-
-const hoje =
-new Date();
-
-const validade =
-new Date(data.validade);
-
-if(validade < hoje){
-
-document.getElementById(
-"resultado"
-).innerHTML = `
-
-<div class="card expirado">
-
-<img
-src="logo.png"
-class="logo">
-
-<h2>⚠️ Certificado Caducado</h2>
-
-<p>
-Este certificado fue emitido
-correctamente, pero se encuentra
-expirado.
-</p>
-
-<div class="info">
-
-<p><b>Nombre:</b>
-${data.nome}</p>
-
-<p><b>Empresa:</b>
-${data.empresa}</p>
-
-<p><b>Tipo de Certificado:</b>
-${data.curso}</p>
-
-<p><b>Emisión:</b>
-${data.emissao}</p>
-
-<p><b>Caducidad:</b>
-${data.validade}</p>
-
-<p><b>ID:</b>
-${data.id}</p>
-
-</div>
-
 <div class="consulta">
 Consulta realizada en:
 ${dataConsulta}
@@ -517,58 +485,6 @@ ${dataConsulta}
 return;
 
 }
-
-document.getElementById(
-"resultado"
-).innerHTML = `
-
-<div class="card valido">
-
-<img
-src="logo.png"
-class="logo">
-
-<h2>✅ Certificado Válido</h2>
-
-<p>
-Este certificado fue validado
-con éxito en nuestra base de datos.
-</p>
-
-<div class="info">
-
-<p><b>Nombre:</b>
-${data.nome}</p>
-
-<p><b>Empresa:</b>
-${data.empresa}</p>
-
-<p><b>Tipo de certificado:</b>
-${data.curso}</p>
-
-<p><b>Emisión:</b>
-${data.emissao}</p>
-
-<p><b>Caducidad:</b>
-${data.validade}</p>
-
-<p><b>ID:</b>
-${data.id}</p>
-
-</div>
-
-<div class="consulta">
-Consulta realizada en:
-${dataConsulta}
-</div>
-
-</div>
-
-`;
-
-}
-
-verificar();
 
 </script>
 
