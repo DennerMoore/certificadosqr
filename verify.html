@@ -192,6 +192,8 @@ console.log(error);
 
 if(error || !data){
 
+if(data && data.ativo === false){
+
 document.getElementById(
 "resultado"
 ).innerHTML = `
@@ -202,16 +204,27 @@ document.getElementById(
 src="logo.png"
 class="logo">
 
-<h2>❌ Certificado Não Encontrado</h2>
+<h2>🚫 Certificado Revogado</h2>
 
 <p>
-O certificado consultado não existe
-em nossa base de dados.
+Este certificado foi revogado
+e não possui mais validade.
 </p>
 
-<div class="consulta">
-Consulta realizada em:
-${dataConsulta}
+<div class="info">
+
+<p><b>Nome:</b>
+${data.nome}</p>
+
+<p><b>Empresa:</b>
+${data.empresa}</p>
+
+<p><b>Curso:</b>
+${data.curso}</p>
+
+<p><b>ID:</b>
+${data.id}</p>
+
 </div>
 
 </div>
@@ -220,6 +233,7 @@ ${dataConsulta}
 
 return;
 
+}
 }
 
 const hoje =
