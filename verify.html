@@ -18,10 +18,10 @@
 
 <script>
 
-const supabase =
+const banco =
 window.supabase.createClient(
-"SUA_URL",
-"SUA_CHAVE"
+"https://ntxfyzdumgozwtyufoor.supabase.co",
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im50eGZ5emR1bWdvend0eXVmb29yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NjczNDEsImV4cCI6MjA5NjI0MzM0MX0.nL0kXMEsAdq9RC9QerUsf7xSnWUNegkYp4PGPkzQrKE"
 );
 
 async function verificar(){
@@ -32,7 +32,7 @@ window.location.search
 ).get("id");
 
 const { data } =
-await supabase
+await banco
 .from("certificados")
 .select("*")
 .eq("id", id)
