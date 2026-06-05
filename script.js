@@ -4,7 +4,7 @@ const SUPABASE_URL =
 "https://ntxfyzdumgozwtyufoor.supabase.co";
 
 const SUPABASE_KEY =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im50eGZ5emR1bWdvend0eXVmb29yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NjczNDEsImV4cCI6MjA5NjI0MzM0MX0.nL0kXMEsAdq9RC9QerUsf7xSnWUNegkYp4PGPkzQrKE";
+"SUA_CHAVE_AQUI";
 
 const banco =
 window.supabase.createClient(
@@ -58,16 +58,30 @@ async function gerarCertificado(){
 
         validade:
         document.getElementById(
-        "validade").value
+        "validade").value,
+
+        ativo: true
     };
 
     dados.hash =
     await sha256(
     JSON.stringify(dados));
 
+    const { error } =
     await banco
     .from("certificados")
     .insert([dados]);
+
+    if(error){
+
+        console.error(error);
+
+        alert(
+        "Erro ao salvar certificado"
+        );
+
+        return;
+    }
 
     document
     .getElementById("resultado")
@@ -79,13 +93,13 @@ async function gerarCertificado(){
     );
 
     const verifyUrl =
-window.location.origin +
-window.location.pathname.replace(
-"index.html",
-""
-) +
-"verify.html?id=" +
-certId;
+    window.location.origin +
+    window.location.pathname.replace(
+    "index.html",
+    ""
+    ) +
+    "verify.html?id=" +
+    certId;
 
     document
     .getElementById("qrcode")
@@ -101,10 +115,20 @@ certId;
         }
     );
 
-    await gerarPDF(dados);
+    setTimeout(() => {
+
+        gerarPDF(
+            dados,
+            verifyUrl
+        );
+
+    }, 700);
 }
 
-async function gerarPDF(dados){
+async function gerarPDF(
+    dados,
+    verifyUrl
+){
 
 const { jsPDF } =
 window.jspdf;
@@ -112,50 +136,150 @@ window.jspdf;
 const pdf =
 new jsPDF();
 
+pdf.setDrawColor(
+0,
+0,
+0
+);
+
+pdf.rect(
+10,
+10,
+190,
+277
+);
+
 pdf.setFontSize(24);
 
 pdf.text(
 "CERTIFICADO",
-70,
-25
+65,
+30
 );
 
 pdf.setFontSize(12);
 
 pdf.text(
-`Nome: ${dados.nome}`,
+"Certificamos que:",
 20,
-50
+55
 );
+
+pdf.setFontSize(18);
+
+pdf.text(
+dados.nome,
+20,
+70
+);
+
+pdf.setFontSize(12);
 
 pdf.text(
 `Empresa: ${dados.empresa}`,
-20,
-65
-);
-
-pdf.text(
-`Curso: ${dados.curso}`,
-20,
-80
-);
-
-pdf.text(
-`Emissão: ${dados.emissao}`,
 20,
 95
 );
 
 pdf.text(
-`Validade: ${dados.validade}`,
+`Curso: ${dados.curso}`,
 20,
 110
 );
 
 pdf.text(
-`ID: ${dados.id}`,
+`Data de emissão: ${dados.emissao}`,
 20,
 125
+);
+
+pdf.text(
+`Validade: ${dados.validade}`,
+20,
+140
+);
+
+pdf.text(
+`ID do certificado:`,
+20,
+160
+);
+
+pdf.setFontSize(10);
+
+pdf.text(
+dados.id,
+20,
+168
+);
+
+pdf.text(
+`Hash SHA-256:`,
+20,
+185
+);
+
+pdf.setFontSize(8);
+
+pdf.text(
+dados.hash.substring(
+0,
+64
+),
+20,
+193
+);
+
+const qrCanvas =
+document.querySelector(
+"#qrcode canvas"
+);
+
+if(qrCanvas){
+
+const qrImage =
+qrCanvas.toDataURL(
+"image/png"
+);
+
+pdf.addImage(
+qrImage,
+"PNG",
+135,
+70,
+45,
+45
+);
+
+}
+
+pdf.setFontSize(9);
+
+pdf.text(
+"Validação online:",
+20,
+230
+);
+
+pdf.text(
+verifyUrl,
+20,
+238
+);
+
+pdf.line(
+60,
+255,
+140,
+255
+);
+
+pdf.setFontSize(10);
+
+pdf.text(
+"Assinatura",
+90,
+262
 );
 
 pdf.save(
