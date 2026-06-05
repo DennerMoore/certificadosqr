@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
+<html lang="es">
 
-<title>Emissão de Certificados</title>
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Emisión de Certificados</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -19,29 +22,100 @@
 
 <body>
 
-<h1>Emitir Certificado</h1>
+<div class="container">
 
-<input id="nome" placeholder="Nome">
+    <div class="card">
 
-<input id="empresa" placeholder="Empresa">
+        <img
+        src="logo.png"
+        alt="Logo"
+        class="logo">
 
-<input id="curso" placeholder="Curso">
+        <h1>
+            Emisión de Certificados
+        </h1>
 
-<label>Data Emissão</label>
-<input id="emissao" type="date">
+        <p class="subtitle">
+            Plataforma de certificación digital con validación mediante código QR
+        </p>
 
-<label>Data Validade</label>
-<input id="validade" type="date">
+        <div class="form-group">
 
-<button onclick="gerarCertificado()">
-Gerar Certificado
-</button>
+            <label>
+                Nombre del Participante
+            </label>
 
-<div id="qrcode"></div>
+            <input
+            id="nome"
+            placeholder="Ej: Juan Pérez">
 
-<pre id="resultado"></pre>
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Empresa
+            </label>
+
+            <input
+            id="empresa"
+            placeholder="Ej: Aguas de Valencia">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Curso / Formación
+            </label>
+
+            <input
+            id="curso"
+            placeholder="Ej: Seguridad Informática">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Fecha de Emisión
+            </label>
+
+            <input
+            id="emissao"
+            type="date">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Fecha de Caducidad
+            </label>
+
+            <input
+            id="validade"
+            type="date">
+
+        </div>
+
+        <button
+        onclick="gerarCertificado()">
+
+            Generar Certificado
+
+        </button>
+
+        <div id="qrcode"></div>
+
+        <pre id="resultado"></pre>
+
+    </div>
+
+</div>
 
 <script src="script.js"></script>
 
 </body>
+
 </html>
