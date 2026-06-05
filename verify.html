@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+
+<title>Verificar Certificado</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+</head>
+
+<body>
+
+<h1>Validação</h1>
+
+<div id="resultado"></div>
+
+<script>
+
+const supabase =
+window.supabase.createClient(
+"SUA_URL",
+"SUA_CHAVE"
+);
+
+async function verificar(){
+
+const id =
+new URLSearchParams(
+window.location.search
+).get("id");
+
+const { data } =
+await supabase
+.from("certificados")
+.select("*")
+.eq("id", id)
+.single();
+
+if(data){
+
+document.getElementById(
+"resultado"
+).innerHTML = `
+<h2>✓ Certificado válido</h2>
+
+<p><b>Nome:</b>
+${data.nome}</p>
+
+<p><b>Empresa:</b>
+${data.empresa}</p>
+
+<p><b>Curso:</b>
+${data.curso}</p>
+
+<p><b>Validade:</b>
+${data.validade}</p>
+`;
+
+}
+else{
+
+document.getElementById(
+"resultado"
+).innerHTML =
+"<h2>❌ Certificado inválido</h2>";
+
+}
+
+}
+
+verificar();
+
+</script>
+
+</body>
+</html>

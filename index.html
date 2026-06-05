@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>Emissão de Certificados</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+</head>
+
+<body>
+
+<h1>Emitir Certificado</h1>
+
+<input id="nome" placeholder="Nome">
+
+<input id="empresa" placeholder="Empresa">
+
+<input id="curso" placeholder="Curso">
+
+<label>Data Emissão</label>
+<input id="emissao" type="date">
+
+<label>Data Validade</label>
+<input id="validade" type="date">
+
+<button onclick="gerarCertificado()">
+Gerar Certificado
+</button>
+
+<div id="qrcode"></div>
+
+<pre id="resultado"></pre>
+
+<script src="script.js"></script>
+
+</body>
+</html>
