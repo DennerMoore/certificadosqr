@@ -26,15 +26,40 @@ async function sha256(texto){
     return Array
         .from(new Uint8Array(hash))
         .map(b =>
-             b.toString(16)
-              .padStart(2,'0'))
-        .join('');
+            b.toString(16)
+             .padStart(2,"0"))
+        .join("");
+}
+
+function carregarImagem(src){
+
+    return new Promise(
+        (resolve,reject)=>{
+
+            const img =
+            new Image();
+
+            img.crossOrigin =
+            "anonymous";
+
+            img.onload =
+            () => resolve(img);
+
+            img.onerror =
+            reject;
+
+            img.src = src;
+
+        }
+    );
+
 }
 
 async function gerarCertificado(){
 
     const certId =
-    "CERT-" + crypto.randomUUID();
+    "CERT-" +
+    crypto.randomUUID();
 
     const dados = {
 
@@ -61,6 +86,7 @@ async function gerarCertificado(){
         "validade").value,
 
         ativo: true
+
     };
 
     dados.hash =
@@ -84,7 +110,8 @@ async function gerarCertificado(){
     }
 
     document
-    .getElementById("resultado")
+    .getElementById(
+    "resultado")
     .textContent =
     JSON.stringify(
         dados,
@@ -102,7 +129,8 @@ async function gerarCertificado(){
     certId;
 
     document
-    .getElementById("qrcode")
+    .getElementById(
+    "qrcode")
     .innerHTML = "";
 
     new QRCode(
@@ -123,6 +151,7 @@ async function gerarCertificado(){
         );
 
     }, 700);
+
 }
 
 async function gerarPDF(
@@ -130,160 +159,212 @@ async function gerarPDF(
     verifyUrl
 ){
 
-const { jsPDF } =
-window.jspdf;
+    const { jsPDF } =
+    window.jspdf;
 
-const pdf =
-new jsPDF();
+    const pdf =
+    new jsPDF(
+        "portrait",
+        "mm",
+        "a4"
+    );
 
-pdf.setDrawColor(
-0,
-0,
-0
-);
+    pdf.setLineWidth(
+        1
+    );
 
-pdf.rect(
-10,
-10,
-190,
-277
-);
+    pdf.rect(
+        10,
+        10,
+        190,
+        277
+    );
 
-pdf.setFontSize(24);
+    try{
 
-pdf.text(
-"CERTIFICADO",
-65,
-30
-);
+        const logo =
+        await carregarImagem(
+            "./logo.png"
+        );
 
-pdf.setFontSize(12);
+        pdf.addImage(
+            logo,
+            "PNG",
+            75,
+            15,
+            60,
+            25
+        );
 
-pdf.text(
-"Certificamos que:",
-20,
-55
-);
+    }
+    catch(err){
 
-pdf.setFontSize(18);
+        console.log(
+            "Logo não encontrado"
+        );
 
-pdf.text(
-dados.nome,
-20,
-70
-);
+    }
 
-pdf.setFontSize(12);
+    pdf.setFontSize(
+        26
+    );
 
-pdf.text(
-`Empresa: ${dados.empresa}`,
-20,
-95
-);
+    pdf.text(
+        "CERTIFICADO",
+        105,
+        55,
+        {
+            align:"center"
+        }
+    );
 
-pdf.text(
-`Curso: ${dados.curso}`,
-20,
-110
-);
+    pdf.setFontSize(
+        12
+    );
 
-pdf.text(
-`Data de emissão: ${dados.emissao}`,
-20,
-125
-);
+    pdf.text(
+        "Certificamos que",
+        105,
+        75,
+        {
+            align:"center"
+        }
+    );
 
-pdf.text(
-`Validade: ${dados.validade}`,
-20,
-140
-);
+    pdf.setFontSize(
+        20
+    );
 
-pdf.text(
-`ID do certificado:`,
-20,
-160
-);
+    pdf.text(
+        dados.nome,
+        105,
+        95,
+        {
+            align:"center"
+        }
+    );
 
-pdf.setFontSize(10);
+    pdf.setFontSize(
+        12
+    );
 
-pdf.text(
-dados.id,
-20,
-168
-);
+    pdf.text(
+        `Empresa: ${dados.empresa}`,
+        20,
+        125
+    );
 
-pdf.text(
-`Hash SHA-256:`,
-20,
-185
-);
+    pdf.text(
+        `Curso: ${dados.curso}`,
+        20,
+        140
+    );
 
-pdf.setFontSize(8);
+    pdf.text(
+        `Emissão: ${dados.emissao}`,
+        20,
+        155
+    );
 
-pdf.text(
-dados.hash.substring(
-0,
-64
-),
-20,
-193
-);
+    pdf.text(
+        `Validade: ${dados.validade}`,
+        20,
+        170
+    );
 
-const qrCanvas =
-document.querySelector(
-"#qrcode canvas"
-);
+    pdf.text(
+        `ID: ${dados.id}`,
+        20,
+        185
+    );
 
-if(qrCanvas){
+    const qrCanvas =
+    document.querySelector(
+        "#qrcode canvas"
+    );
 
-const qrImage =
-qrCanvas.toDataURL(
-"image/png"
-);
+    if(qrCanvas){
 
-pdf.addImage(
-qrImage,
-"PNG",
-135,
-70,
-45,
-45
-);
+        const qrImage =
+        qrCanvas.toDataURL(
+            "image/png"
+        );
 
-}
+        pdf.addImage(
+            qrImage,
+            "PNG",
+            140,
+            115,
+            40,
+            40
+        );
 
-pdf.setFontSize(9);
+    }
 
-pdf.text(
-"Validação online:",
-20,
-230
-);
+    pdf.setFontSize(
+        10
+    );
 
-pdf.text(
-verifyUrl,
-20,
-238
-);
+    pdf.text(
+        "Hash SHA-256",
+        20,
+        210
+    );
 
-pdf.line(
-60,
-255,
-140,
-255
-);
+    pdf.setFontSize(
+        7
+    );
 
-pdf.setFontSize(10);
+    pdf.text(
+        dados.hash,
+        20,
+        218,
+        {
+            maxWidth:170
+        }
+    );
 
-pdf.text(
-"Assinatura",
-90,
-262
-);
+    pdf.setFontSize(
+        9
+    );
 
-pdf.save(
-`${dados.id}.pdf`
-);
+    pdf.text(
+        "Validação online:",
+        20,
+        245
+    );
+
+    pdf.text(
+        verifyUrl,
+        20,
+        252,
+        {
+            maxWidth:170
+        }
+    );
+
+    pdf.line(
+        65,
+        265,
+        145,
+        265
+    );
+
+    pdf.setFontSize(
+        10
+    );
+
+    pdf.text(
+        "Assinatura Digital",
+        105,
+        272,
+        {
+            align:"center"
+        }
+    );
+
+    pdf.save(
+        `${dados.id}.pdf`
+    );
 
 }
