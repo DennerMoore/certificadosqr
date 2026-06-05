@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
 
 <meta charset="UTF-8">
@@ -13,12 +14,16 @@ content="width=device-width, initial-scale=1.0">
 
 <style>
 
+*{
+box-sizing:border-box;
+}
+
 body{
 
 margin:0;
-padding:0;
+padding:20px;
 
-font-family:Arial,sans-serif;
+font-family:Arial, Helvetica, sans-serif;
 
 background:#f4f7fb;
 
@@ -41,10 +46,20 @@ border-radius:20px;
 box-shadow:
 0 10px 30px rgba(0,0,0,.1);
 
-max-width:700px;
-width:90%;
+max-width:800px;
+width:100%;
 
 text-align:center;
+
+}
+
+.logo{
+
+max-width:180px;
+
+height:auto;
+
+margin-bottom:20px;
 
 }
 
@@ -80,6 +95,16 @@ margin:10px 0;
 
 }
 
+.consulta{
+
+margin-top:25px;
+
+font-size:14px;
+
+color:#666;
+
+}
+
 h2{
 
 margin-top:0;
@@ -107,7 +132,7 @@ margin-top:0;
 const banco =
 window.supabase.createClient(
 "https://ntxfyzdumgozwtyufoor.supabase.co",
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im50eGZ5emR1bWdvend0eXVmb29yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NjczNDEsImV4cCI6MjA5NjI0MzM0MX0.nL0kXMEsAdq9RC9QerUsf7xSnWUNegkYp4PGPkzQrKE"
+"SUA_CHAVE_SUPABASE"
 );
 
 async function verificar(){
@@ -117,6 +142,11 @@ new URLSearchParams(
 window.location.search
 ).get("id");
 
+const dataConsulta =
+new Date().toLocaleString(
+"pt-BR"
+);
+
 if(!id){
 
 document.getElementById(
@@ -125,11 +155,20 @@ document.getElementById(
 
 <div class="card invalido">
 
+<img
+src="logo.png"
+class="logo">
+
 <h2>❌ Certificado Inválido</h2>
 
 <p>
 Nenhum identificador foi informado.
 </p>
+
+<div class="consulta">
+Consulta realizada em:
+${dataConsulta}
+</div>
 
 </div>
 
@@ -154,12 +193,21 @@ document.getElementById(
 
 <div class="card invalido">
 
+<img
+src="logo.png"
+class="logo">
+
 <h2>❌ Certificado Não Encontrado</h2>
 
 <p>
-O certificado informado não existe
+O certificado consultado não existe
 em nossa base de dados.
 </p>
+
+<div class="consulta">
+Consulta realizada em:
+${dataConsulta}
+</div>
 
 </div>
 
@@ -169,7 +217,8 @@ return;
 
 }
 
-const hoje = new Date();
+const hoje =
+new Date();
 
 const validade =
 new Date(data.validade);
@@ -181,6 +230,10 @@ document.getElementById(
 ).innerHTML = `
 
 <div class="card expirado">
+
+<img
+src="logo.png"
+class="logo">
 
 <h2>⚠️ Certificado Expirado</h2>
 
@@ -212,6 +265,11 @@ ${data.id}</p>
 
 </div>
 
+<div class="consulta">
+Consulta realizada em:
+${dataConsulta}
+</div>
+
 </div>
 
 `;
@@ -226,11 +284,15 @@ document.getElementById(
 
 <div class="card valido">
 
+<img
+src="logo.png"
+class="logo">
+
 <h2>✅ Certificado Verificado</h2>
 
 <p>
 Este certificado foi validado
-com sucesso.
+com sucesso em nossa base de dados.
 </p>
 
 <div class="info">
@@ -255,6 +317,11 @@ ${data.id}</p>
 
 </div>
 
+<div class="consulta">
+Consulta realizada em:
+${dataConsulta}
+</div>
+
 </div>
 
 `;
@@ -266,4 +333,5 @@ verificar();
 </script>
 
 </body>
+
 </html>
