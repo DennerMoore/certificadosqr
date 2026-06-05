@@ -200,7 +200,7 @@ async function gerarPDF(
     catch(err){
 
         console.log(
-            "Logo não encontrado"
+            "Logo no encontrado"
         );
 
     }
@@ -255,19 +255,19 @@ async function gerarPDF(
     );
 
     pdf.text(
-        `Curso: ${dados.curso}`,
+        `Tipo de Certificado: ${dados.curso}`,
         20,
         140
     );
 
     pdf.text(
-        `Emissão: ${dados.emissao}`,
+        `Emisión: ${dados.emissao}`,
         20,
         155
     );
 
     pdf.text(
-        `Validade: ${dados.validade}`,
+        `Caducidad: ${dados.validade}`,
         20,
         170
     );
@@ -329,7 +329,7 @@ async function gerarPDF(
     );
 
     pdf.text(
-        "Validação online:",
+        "Validación online:",
         20,
         245
     );
@@ -355,7 +355,7 @@ async function gerarPDF(
     );
 
     pdf.text(
-        "Assinatura Digital",
+        "Firma Digital",
         105,
         272,
         {
