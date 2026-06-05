@@ -310,7 +310,7 @@ window.location.search
 
 const dataConsulta =
 new Date().toLocaleString(
-"pt-BR"
+"es-CL"
 );
 
 if(!id){
@@ -319,33 +319,101 @@ document.getElementById(
 "resultado"
 ).innerHTML = `
 
-<div class="card valido">
+<div class="card invalido">
 
-<img
-src="logo.png"
+<img src="logo.png"
 class="logo">
 
-<div class="status">
-✅
+<div class="status">❌</div>
+
+<div class="badge badge-invalido">
+CERTIFICADO INVÁLIDO
 </div>
 
-<div class="badge badge-valido">
-CERTIFICADO VÁLIDO
-</div>
-
-<h2>
-Certificado Verificado
-</h2>
+<h2>ID no informado</h2>
 
 <p class="descricao">
-Este certificado ha sido validado correctamente
-en nuestra base de datos.
+No fue posible identificar el certificado.
+</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+const { data, error } =
+await banco
+.from("certificados")
+.select("*")
+.eq("id", id)
+.single();
+
+if(error || !data){
+
+document.getElementById(
+"resultado"
+).innerHTML = `
+
+<div class="card invalido">
+
+<img src="logo.png"
+class="logo">
+
+<div class="status">❌</div>
+
+<div class="badge badge-invalido">
+NO ENCONTRADO
+</div>
+
+<h2>Certificado no encontrado</h2>
+
+<p class="descricao">
+No existe ningún certificado con este identificador.
+</p>
+
+<div class="consulta">
+Consulta realizada:
+${dataConsulta}
+</div>
+
+</div>
+
+`;
+
+return;
+
+}
+
+if(data.ativo === false){
+
+document.getElementById(
+"resultado"
+).innerHTML = `
+
+<div class="card invalido">
+
+<img src="logo.png"
+class="logo">
+
+<div class="status">🚫</div>
+
+<div class="badge badge-invalido">
+REVOCADO
+</div>
+
+<h2>Certificado Revocado</h2>
+
+<p class="descricao">
+Este certificado fue revocado y ya no posee validez.
 </p>
 
 <div class="info">
 
 <div class="campo">
-<span>Participante</span>
+<span>Nombre</span>
 <strong>${data.nome}</strong>
 </div>
 
@@ -355,7 +423,147 @@ en nuestra base de datos.
 </div>
 
 <div class="campo">
-<span>Curso</span>
+<span>Tipo</span>
+<strong>${data.curso}</strong>
+</div>
+
+<div class="campo">
+<span>ID</span>
+<strong class="id-cert">
+${data.id}
+</strong>
+</div>
+
+</div>
+
+<div class="consulta">
+Consulta realizada:
+${dataConsulta}
+</div>
+
+</div>
+
+`;
+
+return;
+
+}
+
+const hoje =
+new Date();
+
+const validade =
+new Date(data.validade);
+
+if(validade < hoje){
+
+document.getElementById(
+"resultado"
+).innerHTML = `
+
+<div class="card expirado">
+
+<img src="logo.png"
+class="logo">
+
+<div class="status">⚠️</div>
+
+<div class="badge badge-expirado">
+CADUCADO
+</div>
+
+<h2>Certificado Caducado</h2>
+
+<p class="descricao">
+Este certificado fue emitido correctamente,
+pero su vigencia ya expiró.
+</p>
+
+<div class="info">
+
+<div class="campo">
+<span>Nombre</span>
+<strong>${data.nome}</strong>
+</div>
+
+<div class="campo">
+<span>Empresa</span>
+<strong>${data.empresa}</strong>
+</div>
+
+<div class="campo">
+<span>Tipo</span>
+<strong>${data.curso}</strong>
+</div>
+
+<div class="campo">
+<span>Emisión</span>
+<strong>${data.emissao}</strong>
+</div>
+
+<div class="campo">
+<span>Caducidad</span>
+<strong>${data.validade}</strong>
+</div>
+
+<div class="campo">
+<span>ID</span>
+<strong class="id-cert">
+${data.id}
+</strong>
+</div>
+
+</div>
+
+<div class="consulta">
+Consulta realizada:
+${dataConsulta}
+</div>
+
+</div>
+
+`;
+
+return;
+
+}
+
+document.getElementById(
+"resultado"
+).innerHTML = `
+
+<div class="card valido">
+
+<img src="logo.png"
+class="logo">
+
+<div class="status">✅</div>
+
+<div class="badge badge-valido">
+VÁLIDO
+</div>
+
+<h2>Certificado Verificado</h2>
+
+<p class="descricao">
+Este certificado ha sido validado correctamente
+en nuestra base de datos.
+</p>
+
+<div class="info">
+
+<div class="campo">
+<span>Nombre</span>
+<strong>${data.nome}</strong>
+</div>
+
+<div class="campo">
+<span>Empresa</span>
+<strong>${data.empresa}</strong>
+</div>
+
+<div class="campo">
+<span>Tipo de Certificado</span>
 <strong>${data.curso}</strong>
 </div>
 
@@ -379,115 +587,22 @@ ${data.id}
 </div>
 
 <div class="consulta">
-
 Consulta realizada:
 ${dataConsulta}
-
 </div>
 
 <div class="footer">
-
 Sistema Oficial de Validación Digital
-
 </div>
 
 </div>
 
 `;
-
-return;
-
-}
-
-console.log("ID recebido:", id);
-
-const { data, error } =
-await banco
-.from("certificados")
-.select("*")
-.eq("id", id)
-.single();
-
-console.log(data);
-console.log(error);
-
-if(error || !data){
-
-document.getElementById(
-"resultado"
-).innerHTML = `
-
-<div class="card invalido">
-
-<img
-src="logo.png"
-class="logo">
-
-<h2>❌ Certificado No Encontrado</h2>
-
-<p>
-No existe ningún certificado
-con este identificador.
-</p>
-
-</div>
-
-`;
-
-return;
-
-}
-
-if(data.ativo === false){
-
-document.getElementById(
-"resultado"
-).innerHTML = `
-
-<div class="card invalido">
-
-<img
-src="logo.png"
-class="logo">
-
-<h2>🚫 Certificado Revocado</h2>
-
-<p>
-Este certificado fue revocado
-y ya no posee validez.
-</p>
-
-<div class="info">
-
-<p><b>Nombre:</b>
-${data.nome}</p>
-
-<p><b>Empresa:</b>
-${data.empresa}</p>
-
-<p><b>Tipo de Certificado:</b>
-${data.curso}</p>
-
-<p><b>ID:</b>
-${data.id}</p>
-
-</div>
-
-<div class="consulta">
-Consulta realizada en:
-${dataConsulta}
-</div>
-
-</div>
-
-`;
-
-return;
 
 }
 
 verificar();
-  
+
 </script>
 
 </body>
