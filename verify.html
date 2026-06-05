@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
 
 <meta charset="UTF-8">
 
-<title>Verificar Certificado</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Validação de Certificado</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
@@ -12,16 +15,18 @@
 
 body{
 
-font-family: Arial, sans-serif;
+margin:0;
+padding:0;
+
+font-family:Arial,sans-serif;
+
 background:#f4f7fb;
 
 display:flex;
 justify-content:center;
 align-items:center;
 
-height:100vh;
-
-margin:0;
+min-height:100vh;
 
 }
 
@@ -37,7 +42,6 @@ box-shadow:
 0 10px 30px rgba(0,0,0,.1);
 
 max-width:700px;
-
 width:90%;
 
 text-align:center;
@@ -62,17 +66,23 @@ border-top:8px solid #ef4444;
 
 }
 
-h2{
-
-margin-top:0;
-
-}
-
 .info{
 
 text-align:left;
 
 margin-top:25px;
+
+}
+
+.info p{
+
+margin:10px 0;
+
+}
+
+h2{
+
+margin-top:0;
 
 }
 
@@ -82,16 +92,22 @@ margin-top:25px;
 
 <body>
 
-<h1>Validação</h1>
+<div id="resultado">
 
-<div id="resultado"></div>
+<div class="card">
+
+<h2>Carregando certificado...</h2>
+
+</div>
+
+</div>
 
 <script>
 
 const banco =
 window.supabase.createClient(
 "https://ntxfyzdumgozwtyufoor.supabase.co",
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im50eGZ5emR1bWdvend0eXVmb29yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NjczNDEsImV4cCI6MjA5NjI0MzM0MX0.nL0kXMEsAdq9RC9QerUsf7xSnWUNegkYp4PGPkzQrKE"
+"SUA_CHAVE_ANON"
 );
 
 async function verificar(){
@@ -101,19 +117,80 @@ new URLSearchParams(
 window.location.search
 ).get("id");
 
-const { data } =
+if(!id){
+
+document.getElementById(
+"resultado"
+).innerHTML = `
+
+<div class="card invalido">
+
+<h2>❌ Certificado Inválido</h2>
+
+<p>
+Nenhum identificador foi informado.
+</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+const { data, error } =
 await banco
 .from("certificados")
 .select("*")
 .eq("id", id)
 .single();
 
-if(data){
+if(error || !data){
 
 document.getElementById(
 "resultado"
 ).innerHTML = `
-<h2>✓ Certificado válido</h2>
+
+<div class="card invalido">
+
+<h2>❌ Certificado Não Encontrado</h2>
+
+<p>
+O certificado informado não existe
+em nossa base de dados.
+</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+const hoje = new Date();
+
+const validade =
+new Date(data.validade);
+
+if(validade < hoje){
+
+document.getElementById(
+"resultado"
+).innerHTML = `
+
+<div class="card expirado">
+
+<h2>⚠️ Certificado Expirado</h2>
+
+<p>
+Este certificado foi emitido
+corretamente, porém sua validade
+já expirou.
+</p>
+
+<div class="info">
 
 <p><b>Nome:</b>
 ${data.nome}</p>
@@ -124,54 +201,67 @@ ${data.empresa}</p>
 <p><b>Curso:</b>
 ${data.curso}</p>
 
+<p><b>Emissão:</b>
+${data.emissao}</p>
+
 <p><b>Validade:</b>
 ${data.validade}</p>
+
+<p><b>ID:</b>
+${data.id}</p>
+
+</div>
+
+</div>
+
 `;
 
-}
-else{
-
-document.getElementById(
-"resultado"
-).innerHTML =
-"<h2>❌ Certificado inválido</h2>";
+return;
 
 }
-
-}
-
-verificar(){
-  const hoje = new Date();
-
-const validade =
-new Date(data.validad);
-
-if(validade < hoje){
 
 document.getElementById(
 "resultado"
 ).innerHTML = `
-<div class="card expirado">
 
-<h2>⚠️ Certificado Expirado</h2>
+<div class="card valido">
 
-<p>
-Este certificado foi emitido
-legitimamente, porém sua validade
-já expirou.
-</p>
+<h2>✅ Certificado Verificado</h2>
 
 <p>
-Validade:
-${data.validad}
+Este certificado foi validado
+com sucesso.
 </p>
+
+<div class="info">
+
+<p><b>Nome:</b>
+${data.nome}</p>
+
+<p><b>Empresa:</b>
+${data.empresa}</p>
+
+<p><b>Curso:</b>
+${data.curso}</p>
+
+<p><b>Emissão:</b>
+${data.emissao}</p>
+
+<p><b>Validade:</b>
+${data.validade}</p>
+
+<p><b>ID:</b>
+${data.id}</p>
 
 </div>
+
+</div>
+
 `;
 
-return;
 }
-  ;
+
+verificar();
 
 </script>
 
