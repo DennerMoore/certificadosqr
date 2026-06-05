@@ -178,12 +178,17 @@ return;
 
 }
 
+console.log("ID recebido:", id);
+
 const { data, error } =
 await banco
 .from("certificados")
 .select("*")
 .eq("id", id)
 .single();
+
+console.log(data);
+console.log(error);
 
 if(error || !data){
 
