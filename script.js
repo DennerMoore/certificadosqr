@@ -79,9 +79,13 @@ async function gerarCertificado(){
     );
 
     const verifyUrl =
-    window.location.origin +
-    "/verify.html?id=" +
-    certId;
+window.location.origin +
+window.location.pathname.replace(
+"index.html",
+""
+) +
+"verify.html?id=" +
+certId;
 
     document
     .getElementById("qrcode")
