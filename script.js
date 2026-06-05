@@ -100,4 +100,66 @@ certId;
             height:250
         }
     );
+
+    await gerarPDF(dados);
+}
+
+async function gerarPDF(dados){
+
+const { jsPDF } =
+window.jspdf;
+
+const pdf =
+new jsPDF();
+
+pdf.setFontSize(24);
+
+pdf.text(
+"CERTIFICADO",
+70,
+25
+);
+
+pdf.setFontSize(12);
+
+pdf.text(
+`Nome: ${dados.nome}`,
+20,
+50
+);
+
+pdf.text(
+`Empresa: ${dados.empresa}`,
+20,
+65
+);
+
+pdf.text(
+`Curso: ${dados.curso}`,
+20,
+80
+);
+
+pdf.text(
+`Emissão: ${dados.emissao}`,
+20,
+95
+);
+
+pdf.text(
+`Validade: ${dados.validade}`,
+20,
+110
+);
+
+pdf.text(
+`ID: ${dados.id}`,
+20,
+125
+);
+
+pdf.save(
+`${dados.id}.pdf`
+);
+
 }
