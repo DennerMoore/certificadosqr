@@ -4,7 +4,7 @@ const SUPABASE_URL =
 "https://ntxfyzdumgozwtyufoor.supabase.co";
 
 const SUPABASE_KEY =
-"SUA_CHAVE_AQUI";
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im50eGZ5emR1bWdvend0eXVmb29yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NjczNDEsImV4cCI6MjA5NjI0MzM0MX0.nL0kXMEsAdq9RC9QerUsf7xSnWUNegkYp4PGPkzQrKE";
 
 const banco =
 window.supabase.createClient(
