@@ -70,7 +70,38 @@ document.getElementById(
 
 }
 
-verificar();
+verificar(){
+  const hoje = new Date();
+
+const validade =
+new Date(data.validad);
+
+if(validade < hoje){
+
+document.getElementById(
+"resultado"
+).innerHTML = `
+<div class="card expirado">
+
+<h2>⚠️ Certificado Expirado</h2>
+
+<p>
+Este certificado foi emitido
+legitimamente, porém sua validade
+já expirou.
+</p>
+
+<p>
+Validade:
+${data.validad}
+</p>
+
+</div>
+`;
+
+return;
+}
+  ;
 
 </script>
 
