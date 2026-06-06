@@ -233,7 +233,7 @@ window.jspdf;
 
 const pdf =
 new jsPDF(
-"portrait",
+"landscape",
 "mm",
 "a4"
 );
