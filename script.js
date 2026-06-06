@@ -155,216 +155,100 @@ async function gerarCertificado(){
 }
 
 async function gerarPDF(
-    dados,
-    verifyUrl
+dados,
+verifyUrl
 ){
 
-    const { jsPDF } =
-    window.jspdf;
+document.getElementById(
+"pdfNome"
+).textContent =
+dados.nome;
 
-    const pdf =
-    new jsPDF(
-        "portrait",
-        "mm",
-        "a4"
-    );
+document.getElementById(
+"pdfEmpresa"
+).textContent =
+dados.empresa;
 
-    pdf.setLineWidth(
-        1
-    );
+document.getElementById(
+"pdfCurso"
+).textContent =
+dados.curso;
 
-    pdf.rect(
-        10,
-        10,
-        190,
-        277
-    );
+document.getElementById(
+"pdfEmissao"
+).textContent =
+dados.emissao;
 
-    try{
+document.getElementById(
+"pdfValidade"
+).textContent =
+dados.validade;
 
-        const logo =
-        await carregarImagem(
-            "./logo.png"
-        );
+document.getElementById(
+"pdfId"
+).textContent =
+dados.id;
 
-        pdf.addImage(
-            logo,
-            "PNG",
-            75,
-            15,
-            60,
-            25
-        );
+document.getElementById(
+"pdfQr"
+).innerHTML = "";
 
-    }
-    catch(err){
+new QRCode(
+document.getElementById(
+"pdfQr"
+),
+{
+text:verifyUrl,
+width:150,
+height:150
+}
+);
 
-        console.log(
-            "Logo no encontrado"
-        );
+const elemento =
+document.getElementById(
+"certificadoPDF"
+);
 
-    }
+elemento.style.display =
+"block";
 
-    pdf.setFontSize(
-        26
-    );
+const canvas =
+await html2canvas(
+elemento,
+{
+scale:2
+}
+);
 
-    pdf.text(
-        "CERTIFICADO",
-        105,
-        55,
-        {
-            align:"center"
-        }
-    );
+elemento.style.display =
+"none";
 
-    pdf.setFontSize(
-        12
-    );
+const imagem =
+canvas.toDataURL(
+"image/png"
+);
 
-    pdf.text(
-        "Certificamos que",
-        105,
-        75,
-        {
-            align:"center"
-        }
-    );
+const { jsPDF } =
+window.jspdf;
 
-    pdf.setFontSize(
-        20
-    );
+const pdf =
+new jsPDF(
+"landscape",
+"mm",
+"a4"
+);
 
-    pdf.text(
-        dados.nome,
-        105,
-        95,
-        {
-            align:"center"
-        }
-    );
+pdf.addImage(
+imagem,
+"PNG",
+0,
+0,
+297,
+210
+);
 
-    pdf.setFontSize(
-        12
-    );
-
-    pdf.text(
-        `Empresa: ${dados.empresa}`,
-        20,
-        125
-    );
-
-    pdf.text(
-        `Tipo de Certificado: ${dados.curso}`,
-        20,
-        140
-    );
-
-    pdf.text(
-        `Emisión: ${dados.emissao}`,
-        20,
-        155
-    );
-
-    pdf.text(
-        `Caducidad: ${dados.validade}`,
-        20,
-        170
-    );
-
-    pdf.text(
-        `ID: ${dados.id}`,
-        20,
-        185
-    );
-
-    const qrCanvas =
-    document.querySelector(
-        "#qrcode canvas"
-    );
-
-    if(qrCanvas){
-
-        const qrImage =
-        qrCanvas.toDataURL(
-            "image/png"
-        );
-
-        pdf.addImage(
-            qrImage,
-            "PNG",
-            140,
-            115,
-            40,
-            40
-        );
-
-    }
-
-    pdf.setFontSize(
-        10
-    );
-
-    pdf.text(
-        "Hash SHA-256",
-        20,
-        210
-    );
-
-    pdf.setFontSize(
-        7
-    );
-
-    pdf.text(
-        dados.hash,
-        20,
-        218,
-        {
-            maxWidth:170
-        }
-    );
-
-    pdf.setFontSize(
-        9
-    );
-
-    pdf.text(
-        "Validación online:",
-        20,
-        245
-    );
-
-    pdf.text(
-        verifyUrl,
-        20,
-        252,
-        {
-            maxWidth:170
-        }
-    );
-
-    pdf.line(
-        65,
-        265,
-        145,
-        265
-    );
-
-    pdf.setFontSize(
-        10
-    );
-
-    pdf.text(
-        "Firma Digital",
-        105,
-        272,
-        {
-            align:"center"
-        }
-    );
-
-    pdf.save(
-        `${dados.id}.pdf`
-    );
+pdf.save(
+`Garantia-${dados.nome}.pdf`
+);
 
 }
