@@ -115,95 +115,124 @@
 </div>
 
 <div id="certificadoPDF" style="display:none;">
+  <div class="certificado">
 
-    <div class="certificado">
+    <!-- Faixa topo -->
+    <div class="cert-topbar"></div>
 
-    <div class="faixa-topo"></div>
+    <!-- Bordas decorativas -->
+    <div class="cert-border-outer"></div>
+    <div class="cert-border-inner"></div>
 
-        <img
-        src="logo.png"
-        class="pdf-logo">
-
-        <div class="watermark">
-            <img src="logo.png">
-        </div>
-
-        <h1>
-            CERTIFICADO DE GARANTÍA
-        </h1>
-
-        <p class="subtitulo">
-            Se certifica que el cliente identificado
-            a continuación posee una garantía válida
-            registrada digitalmente.
-        </p>
-
-        <div id="pdfNome"></div>
-
-        <p class="subtitulo-cert">
-
-CLIENTE AUTORIZADO
-
-</p>
-
-        <div class="linha"></div>
-
-        <div class="detalhes">
-
-<div>
-<strong>EMPRESA RESPONSABLE</strong>
-<span id="pdfEmpresa"></span>
-</div>
-
-<div>
-<strong>TIPO DE GARANTÍA</strong>
-<span id="pdfCurso"></span>
-</div>
-
-<div>
-<strong>FECHA EMISIÓN</strong>
-<span id="pdfEmissao"></span>
-</div>
-
-<div>
-<strong>VÁLIDO HASTA</strong>
-<span id="pdfValidade"></span>
-</div>
-
-</div>
-
-        <div id="pdfQr"></div>
-
-        <div class="sello">
-
-GARANTÍA
-
-VERIFICADA
-
-<span>✓</span>
-
-</div>
-
-        <div class="footer-cert">
-
-<div>
-
-ID:
-<span id="pdfId"></span>
-
-</div>
-
-<div>
-
-Validación Digital Oficial
-
-</div>
-
-</div>
-
+    <!-- Ornamentos de canto -->
+    <div class="cert-corner cert-corner-tl">
+      <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 34 L2 2 L34 2" stroke="#1a1a1a" stroke-width="1.2"/>
+        <path d="M2 18 L8 18 M18 2 L18 8" stroke="#1a1a1a" stroke-width="0.6"/>
+      </svg>
+    </div>
+    <div class="cert-corner cert-corner-tr">
+      <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 34 L2 2 L34 2" stroke="#1a1a1a" stroke-width="1.2"/>
+        <path d="M2 18 L8 18 M18 2 L18 8" stroke="#1a1a1a" stroke-width="0.6"/>
+      </svg>
+    </div>
+    <div class="cert-corner cert-corner-bl">
+      <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 34 L2 2 L34 2" stroke="#1a1a1a" stroke-width="1.2"/>
+        <path d="M2 18 L8 18 M18 2 L18 8" stroke="#1a1a1a" stroke-width="0.6"/>
+      </svg>
+    </div>
+    <div class="cert-corner cert-corner-br">
+      <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 34 L2 2 L34 2" stroke="#1a1a1a" stroke-width="1.2"/>
+        <path d="M2 18 L8 18 M18 2 L18 8" stroke="#1a1a1a" stroke-width="0.6"/>
+      </svg>
     </div>
 
+    <div class="cert-body">
+
+      <!-- Marca d'água -->
+      <div class="cert-watermark">GARANTÍA</div>
+
+      <!-- Logo -->
+      <div class="cert-logo-area">
+        <img src="logo.png" alt="Logo">
+      </div>
+
+      <!-- Divisor -->
+      <div class="cert-divider">
+        <div class="cert-divider-line"></div>
+        <div class="cert-divider-diamond"></div>
+        <div class="cert-divider-line"></div>
+      </div>
+
+      <!-- Título -->
+      <div class="cert-eyebrow">Certificación Digital Oficial</div>
+      <p class="cert-title-main">Certificado de</p>
+      <span class="cert-title-italic">Garantía</span>
+      <p class="cert-subtitle">
+        Se certifica que el cliente identificado a continuación posee una
+        garantía válida registrada digitalmente en nuestros sistemas.
+      </p>
+
+      <!-- Nome do cliente -->
+      <div class="cert-name-section">
+        <div class="cert-name-label">Cliente Autorizado</div>
+        <div class="cert-name-value" id="pdfNome"></div>
+        <div class="cert-name-underline"></div>
+      </div>
+
+      <!-- Detalhes -->
+      <div class="cert-details">
+        <div class="cert-detail-cell">
+          <div class="cert-detail-label">Empresa Responsable</div>
+          <div class="cert-detail-value" id="pdfEmpresa"></div>
+        </div>
+        <div class="cert-detail-cell">
+          <div class="cert-detail-label">Tipo de Garantía</div>
+          <div class="cert-detail-value" id="pdfCurso"></div>
+        </div>
+        <div class="cert-detail-cell">
+          <div class="cert-detail-label">Fecha de Emisión</div>
+          <div class="cert-detail-value" id="pdfEmissao"></div>
+        </div>
+        <div class="cert-detail-cell">
+          <div class="cert-detail-label">Válido Hasta</div>
+          <div class="cert-detail-value" id="pdfValidade"></div>
+        </div>
+      </div>
+
+      <!-- Rodapé: QR + ID + Selo -->
+      <div class="cert-footer">
+
+        <div class="cert-qr-block">
+          <div id="pdfQr"></div>
+          <div class="cert-qr-label">Verificar autenticidad</div>
+        </div>
+
+        <div class="cert-id-block">
+          <div class="cert-id-label">Identificador del Certificado</div>
+          <div class="cert-id-value" id="pdfId"></div>
+        </div>
+
+        <div class="cert-seal">
+          <div class="cert-seal-ring">
+            <div class="cert-seal-check">✓</div>
+            <div class="cert-seal-text">Garantía<br>Verificada</div>
+          </div>
+          <div class="cert-seal-label">Validación Oficial</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Faixa inferior -->
+    <div class="cert-bottombar"></div>
+
+  </div>
 </div>
+
 
 <script src="script.js"></script>
 
