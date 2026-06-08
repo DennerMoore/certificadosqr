@@ -228,37 +228,315 @@ left:-9999px;
 top:0;
 }
 
-.certificado{
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Tenor+Sans&display=swap');
 
-width:794px;
-height:1123px;
-
-background:
-linear-gradient(
-135deg,
-#ffffff,
-#f8fafc
-);
-
-background-image:
-radial-gradient(
-circle at 20% 20%,
-rgba(0,0,0,.03),
-transparent 40%
-);
-
-border:8px solid #d1d5db;
-
-padding:70px;
-
-position:relative;
-
-font-family:
-"Segoe UI",
-sans-serif;
-
-overflow:hidden;
+#certificadoPDF {
+  position: absolute;
+  left: -9999px;
+  top: 0;
 }
+
+.certificado {
+  width: 794px;
+  height: 1123px;
+  background: #faf8f4;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Bordas duplas decorativas */
+.cert-border-outer {
+  position: absolute;
+  inset: 22px;
+  border: 1px solid #1a1a1a;
+  pointer-events: none;
+  z-index: 10;
+}
+.cert-border-inner {
+  position: absolute;
+  inset: 30px;
+  border: 0.5px solid rgba(26,26,26,0.3);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Ornamentos de canto */
+.cert-corner {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  z-index: 11;
+}
+.cert-corner svg { display: block; }
+.cert-corner-tl { top: 14px; left: 14px; }
+.cert-corner-tr { top: 14px; right: 14px; transform: scaleX(-1); }
+.cert-corner-bl { bottom: 14px; left: 14px; transform: scaleY(-1); }
+.cert-corner-br { bottom: 14px; right: 14px; transform: scale(-1,-1); }
+
+/* Faixa topo */
+.cert-topbar {
+  height: 8px;
+  background: #1a1a1a;
+  flex-shrink: 0;
+}
+
+/* Corpo */
+.cert-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 56px 80px 48px;
+  position: relative;
+}
+
+/* Marca d'água */
+.cert-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-20deg);
+  font-family: 'Tenor Sans', sans-serif;
+  font-size: 130px;
+  letter-spacing: 20px;
+  color: rgba(26,26,26,0.032);
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 0;
+  user-select: none;
+}
+
+/* Logo */
+.cert-logo-area {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+.cert-logo-area img {
+  height: 44px;
+  width: auto;
+}
+
+/* Divisor com losango */
+.cert-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.cert-divider-line { flex: 1; height: 0.5px; background: #1a1a1a; }
+.cert-divider-diamond {
+  width: 7px; height: 7px;
+  background: #1a1a1a;
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+/* Eyebrow */
+.cert-eyebrow {
+  text-align: center;
+  font-family: 'Tenor Sans', sans-serif;
+  font-size: 10px;
+  letter-spacing: 5px;
+  color: #777;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+/* Título */
+.cert-title-main {
+  text-align: center;
+  font-size: 52px;
+  font-weight: 300;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  line-height: 1;
+  margin: 0;
+}
+.cert-title-italic {
+  text-align: center;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 58px;
+  letter-spacing: 4px;
+  color: #1a1a1a;
+  margin: 4px 0 0;
+  display: block;
+}
+
+/* Subtítulo */
+.cert-subtitle {
+  text-align: center;
+  font-size: 13.5px;
+  color: #555;
+  line-height: 1.75;
+  margin: 18px auto 0;
+  max-width: 420px;
+  font-weight: 300;
+  font-style: italic;
+}
+
+/* Nome */
+.cert-name-section {
+  text-align: center;
+  margin: 36px 0 0;
+  position: relative;
+  z-index: 1;
+}
+.cert-name-label {
+  font-family: 'Tenor Sans', sans-serif;
+  font-size: 9px;
+  letter-spacing: 5px;
+  color: #999;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.cert-name-value {
+  font-size: 42px;
+  font-weight: 600;
+  color: #1a1a1a;
+  letter-spacing: 1px;
+}
+.cert-name-underline {
+  width: 240px;
+  height: 0.5px;
+  background: #1a1a1a;
+  margin: 12px auto 0;
+}
+
+/* Grid de detalhes */
+.cert-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: rgba(26,26,26,0.12);
+  border: 0.5px solid rgba(26,26,26,0.15);
+  margin: 36px 0 0;
+  position: relative;
+  z-index: 1;
+}
+.cert-detail-cell {
+  background: #faf8f4;
+  padding: 18px 22px;
+}
+.cert-detail-label {
+  font-family: 'Tenor Sans', sans-serif;
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: #999;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.cert-detail-value {
+  font-size: 17px;
+  font-weight: 400;
+  color: #1a1a1a;
+}
+
+/* Rodapé */
+.cert-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 28px;
+  position: relative;
+  z-index: 1;
+}
+
+/* QR */
+.cert-qr-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+.cert-qr-block > div:first-child {
+  padding: 6px;
+  border: 1px solid #1a1a1a;
+  background: white;
+}
+.cert-qr-label {
+  font-family: 'Tenor Sans', sans-serif;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: #aaa;
+  text-transform: uppercase;
+}
+
+/* ID */
+.cert-id-block {
+  text-align: center;
+  flex: 1;
+  padding: 0 32px;
+}
+.cert-id-label {
+  font-family: 'Tenor Sans', sans-serif;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: #aaa;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.cert-id-value {
+  font-family: 'Tenor Sans', monospace, sans-serif;
+  font-size: 9px;
+  color: #777;
+  letter-spacing: 0.5px;
+  word-break: break-all;
+  line-height: 1.6;
+}
+
+/* Selo */
+.cert-seal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.cert-seal-ring {
+  width: 90px; height: 90px;
+  border: 1.5px solid #1a1a1a;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+.cert-seal-check {
+  font-size: 26px;
+  color: #1a1a1a;
+  line-height: 1;
+}
+.cert-seal-text {
+  font-family: 'Tenor Sans', sans-serif;
+  font-size: 7px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  text-align: center;
+  line-height: 1.5;
+}
+.cert-seal-label {
+  font-family: 'Tenor Sans', sans-serif;
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  color: #aaa;
+  text-transform: uppercase;
+}
+
+/* Barra inferior */
+.cert-bottombar {
+  height: 5px;
+  background: #1a1a1a;
+  flex-shrink: 0;
+}
+
 
 .watermark{
 
