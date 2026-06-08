@@ -154,101 +154,55 @@ async function gerarCertificado(){
 
 }
 
-async function gerarPDF(
-dados,
-verifyUrl
-){
+async function gerarPDF(dados, verifyUrl) {
+  document.getElementById("pdfNome").textContent = dados.nome;
+  document.getElementById("pdfEmpresa").textContent = dados.empresa;
+  document.getElementById("pdfCurso").textContent = dados.curso;
+  document.getElementById("pdfEmissao").textContent = dados.emissao;
+  document.getElementById("pdfValidade").textContent = dados.validade;
+  document.getElementById("pdfId").textContent = dados.id;
 
-document.getElementById(
-"pdfNome"
-).textContent =
-dados.nome;
+  document.getElementById("pdfQr").innerHTML = "";
+  new QRCode(document.getElementById("pdfQr"), {
+    text: verifyUrl,
+    width: 100,
+    height: 100
+  });
 
-document.getElementById(
-"pdfEmpresa"
-).textContent =
-dados.empresa;
+  const elemento = document.getElementById("certificadoPDF");
 
-document.getElementById(
-"pdfCurso"
-).textContent =
-dados.curso;
+  // Posiciona visível mas fora da tela para o html2canvas renderizar corretamente
+  elemento.style.display = "block";
+  elemento.style.position = "fixed";
+  elemento.style.top = "0";
+  elemento.style.left = "-9999px";
+  elemento.style.width = "794px";
+  elemento.style.height = "1123px";
+  elemento.style.overflow = "visible";
 
-document.getElementById(
-"pdfEmissao"
-).textContent =
-dados.emissao;
+  // Aguarda QR renderizar
+  await new Promise(r => setTimeout(r, 800));
 
-document.getElementById(
-"pdfValidade"
-).textContent =
-dados.validade;
+  const canvas = await html2canvas(elemento.querySelector(".certificado"), {
+    scale: 2,
+    useCORS: true,
+    allowTaint: true,
+    width: 794,
+    height: 1123,
+    windowWidth: 794,
+    windowHeight: 1123,
+    scrollX: 0,
+    scrollY: 0
+  });
 
-document.getElementById(
-"pdfId"
-).textContent =
-dados.id;
+  elemento.style.display = "none";
+  elemento.style.position = "absolute";
 
-document.getElementById(
-"pdfQr"
-).innerHTML = "";
+  const imagem = canvas.toDataURL("image/png");
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF("portrait", "mm", "a4");
 
-new QRCode(
-document.getElementById(
-"pdfQr"
-),
-{
-text:verifyUrl,
-width:150,
-height:150
-}
-);
-
-const elemento =
-document.getElementById(
-"certificadoPDF"
-);
-
-elemento.style.display =
-"block";
-
-const canvas =
-await html2canvas(
-elemento,
-{
-scale:2
-}
-);
-
-elemento.style.display =
-"none";
-
-const imagem =
-canvas.toDataURL(
-"image/png"
-);
-
-const { jsPDF } =
-window.jspdf;
-
-const pdf =
-new jsPDF(
-"portrait",
-"mm",
-"a4"
-);
-
-pdf.addImage(
-imagem,
-"PNG",
-0,
-0,
-297,
-210
-);
-
-pdf.save(
-`Garantia-${dados.nome}.pdf`
-);
-
+  // A4 = 210 x 297mm
+  pdf.addImage(imagem, "PNG", 0, 0, 210, 297);
+  pdf.save(`Garantia-${dados.nome}.pdf`);
 }
