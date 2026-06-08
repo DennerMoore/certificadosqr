@@ -203,6 +203,8 @@ async function gerarPDF(dados, verifyUrl) {
   const pdf = new jsPDF("portrait", "mm", "a4");
 
   // A4 = 210 x 297mm
-  pdf.addImage(imagem, "PNG", 0, 0, 210, 297);
+  const largura = pdf.internal.pageSize.getWidth();
+const altura = pdf.internal.pageSize.getHeight();
+pdf.addImage(imagem, "PNG", 0, 0, largura, altura);
   pdf.save(`Garantia-${dados.nome}.pdf`);
 }
